@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>С Днём Рождения, Мамочка!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ==== RESET + VARIABLES =================================================== */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+font-family:Segoe UI,Roboto,sans-serif;
+background:radial-gradient(circle at top,#ffd6f0,#ffeef7,#fbd1ff);
+color:#2b2033;overflow-x:hidden;
+}
+:root{
+--accent:#ff5c9d; --accent2:#ffafcc; --bg:rgba(255,255,255,0.95);
+--shadow:0 18px 45px rgba(0,0,0,.12);
+--r-xl:32px;--r-lg:24px;--r-md:18px;--r-pill:999px;
+}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+button{border:none;background:none;cursor:pointer;font-family:inherit}
+
+/* ==== PRELOADER ========================================================== */
+.preloader{position:fixed;inset:0;background:#ffe7f6;
+display:flex;align-items:center;justify-content:center;z-index:9999;
+flex-direction:column;}
+.preloader__card{
+background:#fff;padding:28px;border-radius:var(--r-lg);
+box-shadow:var(--shadow);width:300px;text-align:center;
+}
+.preloader__title{font-size:20px;font-weight:700;margin-bottom:6px;}
+.preloader__text{font-size:14px;color:#6f627b;margin-bottom:14px;}
+.preloader__bar-wrapper{width:100%;height:8px;background:#eee;border-radius:999px;overflow:hidden;}
+.preloader__bar{height:100%;width:0;background:linear-gradient(90deg,#ff5c9d,#ffc15e,#ff5c9d);transition:.2s;}
+.preloader__heart{font-size:22px;margin-top:16px;animation:heart 1s infinite;}
+@keyframes heart{0%,100%{transform:scale(1)}40%{transform:scale(1.18)}}
+
+/* ==== NAVBAR ============================================================= */
+.navbar{
+position:fixed;top:14px;left:50%;transform:translateX(-50%);
+padding:10px 18px;border-radius:var(--r-pill);
+backdrop-filter:blur(16px);background:rgba(255,255,255,0.85);
+display:flex;gap:14px;z-index:10;box-shadow:var(--shadow);
+}
+.navbar__logo{
+padding:6px 12px;border-radius:999px;color:#fff;
+background:linear-gradient(120deg,var(--accent),var(--accent2));
+font-weight:700;font-size:15px;
+}
+.navbar__links{display:flex;gap:10px;font-size:13px;}
+.navbar__link{
+padding:6px 12px;border-radius:999px;background:rgba(0,0,0,0.05);
+}
+.navbar__btn{
+padding:8px 16px;border-radius:999px;background:linear-gradient(120deg,var(--accent),var(--accent2));
+color:#fff;font-size:13px;font-weight:600;box-shadow:0 12px 24px rgba(255,92,157,.45);
+}
+
+/* ==== LAYOUT ============================================================= */
+.page-wrapper{padding-top:80px;}
+.section{padding:60px 16px;}
+.container{max-width:1100px;margin:auto;}
+.card{
+background:var(--bg);padding:32px;border-radius:var(--r-xl);box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.card__inner{position:relative;z-index:1}
+.pill-label{font-size:12px;padding:4px 8px;border-radius:999px;background:#eee;color:#777;display:inline-block;margin-bottom:10px;}
+.section-title{font-size:30px;margin-bottom:6px;}
+.section-subtitle{font-size:14px;color:#6c5b7b;max-width:420px;margin-bottom:18px;}
+
+/* ==== HERO =============================================================== */
+.hero{min-height:calc(100vh - 90px);display:flex;align-items:center;}
+.hero-grid{display:grid;gap:28px;}
+@media(min-width:900px){
+.hero-grid{grid-template-columns:1.2fr 1fr;}
+}
+
+.hero__title{font-size:38px;line-height:1.2;}
+.hero__title span{
+background:linear-gradient(120deg,#ff5c9d,#ffafcc);
+-webkit-background-clip:text;color:transparent;
+}
+.hero__text{color:#6b5a7a;margin:14px 0;font-size:15px;max-width:440px;}
+
+.btn-primary{
+padding:10px 18px;border-radius:999px;background:linear-gradient(120deg,#ff5c9d,#ffafcc);
+color:#fff;font-weight:600;box-shadow:0 14px 30px rgba(255,92,157,.55);font-size:14px;
+}
+.btn-ghost{
+padding:9px 16px;border-radius:999px;background:#fff;box-shadow:0 9px 20px rgba(0,0,0,0.07);
+font-size:13px;
+}
+
+/* === HERO RIGHT BLOCK (только текст!) ================================== */
+.hero-info{
+background:#fff;border-radius:var(--r-xl);padding:22px;box-shadow:var(--shadow);
+}
+.hero-info__title{font-size:18px;font-weight:700;margin-bottom:10px;}
+.hero-info__items{display:flex;flex-direction:column;gap:12px;font-size:13px;color:#5a4b70;}
+
+/* ==== WHY CARDS ========================================================== */
+.grid-why{display:grid;gap:18px;margin-top:20px;}
+@media(min-width:800px){.grid-why{grid-template-columns:repeat(3,1fr);}}
+.why-card{
+background:#fff;border-radius:20px;padding:16px;box-shadow:var(--shadow);
+}
+.why-card__icon{font-size:22px;margin-bottom:8px;}
+.why-card__title{font-weight:700;margin-bottom:6px;}
+.why-card__text{font-size:13px;color:#6e5c7d;}
+
+/* ==== MOMENTS — ТЁПЛЫЕ ТЕКСТОВЫЕ КАРТОЧКИ =============================== */
+.moments-grid{
+display:grid;gap:16px;margin-top:18px;
+}
+@media(min-width:750px){
+.moments-grid{grid-template-columns:repeat(2,1fr);}
+}
+.moment-card{
+background:#fff;border-radius:20px;padding:18px;box-shadow:var(--shadow);
+font-size:14px;color:#4a3c5b;line-height:1.5;
+}
+.moment-card strong{color:#ff5c9d;font-weight:700;}
+
+/* ==== LETTER ============================================================= */
+.letter-layout{display:grid;gap:22px;margin-top:20px;}
+@media(min-width:860px){.letter-layout{grid-template-columns:1.3fr 1fr;}}
+.letter-card{
+background:#fff;border-radius:var(--r-xl);padding:22px;box-shadow:var(--shadow);
+font-size:14px;color:#4a3c5b;line-height:1.6;white-space:pre-line;
+}
+.letter-meta{font-size:12px;color:#806b8d;margin-bottom:10px;}
+.note-card{
+background:#fff;border-radius:20px;padding:14px;box-shadow:var(--shadow);
+font-size:13px;color:#6b5e80;
+}
+.note-card__title{font-weight:700;margin-bottom:6px;}
+.note-list{list-style:none;}
+.note-list li{margin-bottom:4px;padding-left:12px;position:relative;}
+.note-list li::before{content:"•";position:absolute;left:0;color:#ff5c9d;}
+
+/* ==== WISHES ============================================================= */
+.wishes-grid{display:grid;gap:20px;margin-top:20px;}
+@media(min-width:900px){.wishes-grid{grid-template-columns:1.3fr 1fr;}}
+.wish-item{
+background:#fff;border-radius:20px;padding:14px;box-shadow:var(--shadow);
+display:flex;gap:10px;font-size:13px;color:#5a4b70;align-items:flex-start;
+}
+.wish-item__icon{font-size:16px;}
+.wish-big{
+background:linear-gradient(145deg,#ffafcc,#ffe066);
+border-radius:var(--r-xl);padding:22px;box-shadow:0 22px 48px rgba(255,92,157,.4);
+color:#2b2033;position:relative;
+}
+.wish-big__title{font-size:20px;margin-bottom:12px;}
+.wish-big__text{font-size:14px;line-height:1.6;margin-bottom:10px;}
+.wish-big__note{font-size:13px;opacity:.8;}
+
+.footer{text-align:center;padding:40px 10px;color:#7d6a8b;font-size:12px;}
+
+.reveal{opacity:0;transform:translateY(20px);transition:0.6s;}
+.reveal--visible{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<!-- ================= PRELOADER ================= -->
+<div class="preloader" id="preloader">
+<div class="preloader__card">
+<div class="preloader__title">Готовлю подарок…</div>
+<div class="preloader__text">Сайт для моей любимой мамы почти готов 💗</div>
+<div class="preloader__bar-wrapper"><div class="preloader__bar" id="preloaderBar"></div></div>
+<div class="preloader__heart">❤️</div>
+</div>
+</div>
+
+<!-- ================= NAV ================= -->
+<nav class="navbar">
+<div class="navbar__logo">Для Мамы 💖</div>
+<div class="navbar__links">
+<a href="#hero" class="navbar__link">Начало</a>
+<a href="#why" class="navbar__link">Почему</a>
+<a href="#moments" class="navbar__link">Моменты</a>
+<a href="#letter" class="navbar__link">Письмо</a>
+<a href="#wishes" class="navbar__link">Пожелания</a>
+</div>
+<button class="navbar__btn" id="confettiBtn">🎉</button>
+</nav>
+
+<div class="page-wrapper">
+
+<!-- ================= HERO ================= -->
+<section class="section hero" id="hero">
+<div class="container">
+<div class="card">
+<div class="card__inner hero-grid">
+
+<div>
+<div class="pill-label">Сегодня твой день 💐</div>
+<h1 class="hero__title">С Днём Рождения, <span>мамочка</span></h1>
+<p class="hero__text">
+Этот сайт я сделал специально для тебя.  
+Здесь всё, что я хочу тебе сказать: благодарность, тёплые слова, моё отношение и искренние пожелания.
+</p>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+<button class="btn-primary" id="startScrollBtn">Начать праздник →</button>
+<button class="btn-ghost" id="softConfettiBtn">Магия ✨</button>
+</div>
+</div>
+
+<!-- === TEXT BLOCK: hero-info === -->
+<div class="hero-info reveal">
+<div class="hero-info__title">Почему ты для меня особенная:</div>
+<div class="hero-info__items">
+<div>💗 Ты всегда ставишь семью выше себя.</div>
+<div>🌸 Ты умеешь поддержать даже одним словом.</div>
+<div>✨ Ты сильная, мудрая, настоящая.</div>
+<div>😊 Ты делаешь дом уютным просто своим присутствием.</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- ================= WHY ================= -->
+<section class="section" id="why">
+<div class="container">
+<div class="card reveal">
+<div class="card__inner">
+<div class="pill-label">От сердца</div>
+<h2 class="section-title">Почему я так тебя ценю</h2>
+<p class="section-subtitle">Несколько причин из тысячи.</p>
+
+<div class="grid-why">
+<div class="why-card">
+<div class="why-card__icon">🤍</div>
+<div class="why-card__title">Доброе сердце</div>
+<div class="why-card__text">Ты умеешь заботиться так, как не умеет никто другой.</div>
+</div>
+
+<div class="why-card">
+<div class="why-card__icon">🛡️</div>
+<div class="why-card__title">Сила</div>
+<div class="why-card__text">Ты проходила многое и продолжаешь идти вперёд.</div>
+</div>
+
+<div class="why-card">
+<div class="why-card__icon">😊</div>
+<div class="why-card__title">Улыбка</div>
+<div class="why-card__text">Она делает день светлее, даже если мне плохо.</div>
+</div>
+
+<div class="why-card">
+<div class="why-card__icon">🏡</div>
+<div class="why-card__title">Уют</div>
+<div class="why-card__text">С тобой рядом всегда спокойно.</div>
+</div>
+
+<div class="why-card">
+<div class="why-card__icon">💬</div>
+<div class="why-card__title">Поддержка</div>
+<div class="why-card__text">Ты веришь в меня, даже когда я сомневаюсь.</div>
+</div>
+
+<div class="why-card">
+<div class="why-card__icon">🌈</div>
+<div class="why-card__title">Жизнерадостность</div>
+<div class="why-card__text">Ты умеешь находить хорошее даже в сложном.</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- ================= MOMENTS (TEXT CARDS) ================= -->
+<section class="section" id="moments">
+<div class="container">
+<div class="card reveal">
+<div class="card__inner">
+
+<div class="pill-label">Тёплые моменты</div>
+<h2 class="section-title">То, что я храню в сердце</h2>
+<p class="section-subtitle">Несколько маленьких воспоминаний, которые для меня много значат.</p>
+
+<div class="moments-grid">
+
+<div class="moment-card">
+<strong>Когда ты поддержала меня</strong><br>
+Даже одним коротким «не переживай», которое сразу меня успокоило.
+</div>
+
+<div class="moment-card">
+<strong>Когда мы смеялись над мелочами</strong><br>
+И на минуту забывали обо всех проблемах.
+</div>
+
+<div class="moment-card">
+<strong>Когда ты переживала за мои дела</strong><br>
+Перед контрольной, экзаменами, важными моментами.
+</div>
+
+<div class="moment-card">
+<strong>Когда ты давала мудрый совет</strong><br>
+Иногда строгий, но всегда честный и правильный.
+</div>
+
+<div class="moment-card">
+<strong>Когда ты проявляла заботу</strong><br>
+Такую, которая чувствуется даже без слов.
+</div>
+
+<div class="moment-card">
+<strong>Когда ты улыбалась искренне</strong><br>
+И мне хотелось сделать так, чтобы такие моменты были чаще.
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- ================= LETTER ================= -->
+<section class="section" id="letter">
+<div class="container">
+<div class="card reveal">
+<div class="card__inner">
+
+<div class="pill-label">Самое главное</div>
+<h2 class="section-title">Письмо для тебя</h2>
+
+<div class="letter-layout">
+<div class="letter-card">
+<div class="letter-meta">От твоего сына</div>
+Дорогая мама,
+
+я хочу, чтобы ты сегодня вспомнила, насколько много ты сделала — для себя, для семьи, для меня.  
+Даже когда тебе было тяжело, ты всё равно находила силы поддерживать других.
+
+Я не всегда показываю это правильно, но я правда ценю всё, что ты делаешь.  
+Спасибо за заботу, терпение, поддержку, веру в меня.  
+
+Ты — мой самый родной человек.  
+И я хочу, чтобы в твоей жизни было больше спокойствия, радости и любви.
+
+С Днём Рождения, мамочка.  
+Я очень тебя люблю.
+</div>
+
+<div class="letter-side">
+<div class="note-card">
+<div class="note-card__title">Что я люблю в тебе</div>
+<ul class="note-list">
+<li>Твои добрые слова.</li>
+<li>Твои объятия.</li>
+<li>Твою веру в меня.</li>
+</ul>
+</div>
+
+<div class="note-card">
+<div class="note-card__title">Что хочу, чтобы ты помнила</div>
+Ты не обязана быть идеальной.  
+Ты уже лучшая мама.
+</div>
+
+<div class="note-card">
+<div class="note-card__title">Маленькое пожелание</div>
+Побольше улыбок и меньше переживаний.
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- ================= WISHES ================= -->
+<section class="section" id="wishes">
+<div class="container">
+<div class="card reveal">
+<div class="card__inner">
+
+<div class="pill-label">Пожелания</div>
+<h2 class="section-title">Чего я хочу для тебя</h2>
+
+<div class="wishes-grid">
+
+<div class="wish-list">
+
+<div class="wish-item">
+<div class="wish-item__icon">🕊️</div>
+<div><strong>Спокойствия</strong><br>Чтобы тревог было меньше, а света — больше.</div>
+</div>
+
+<div class="wish-item">
+<div class="wish-item__icon">💤</div>
+<div><strong>Отдыха</strong><br>Ты заслуживаешь отдыхать, а не только заботиться.</div>
+</div>
+
+<div class="wish-item">
+<div class="wish-item__icon">💸</div>
+<div><strong>Стабильности</strong><br>Пусть дела идут легче и ровнее.</div>
+</div>
+
+<div class="wish-item">
+<div class="wish-item__icon">❤️</div>
+<div><strong>Любви</strong><br>Тёплой, искренней, настоящей.</div>
+</div>
+
+<div class="wish-item">
+<div class="wish-item__icon">🌟</div>
+<div><strong>Исполнения желаний</strong><br>Даже маленьких.</div>
+</div>
+
+<div class="wish-item">
+<div class="wish-item__icon">😊</div>
+<div><strong>Улыбок</strong><br>Пусть их будет больше, чем причин переживать.</div>
+</div>
+
+</div>
+
+<div class="wish-big">
+<div class="wish-big__title">Главное пожелание</div>
+<div class="wish-big__text">
+Ты имеешь право быть счастливой.  
+Не только мамой, которая обо всём заботится.  
+Но и женщиной, у которой есть свои мечты, желание отдыхать, жить, радоваться.
+</div>
+<div class="wish-big__note">Я буду стараться, чтобы ты гордилась мной и меньше волновалась.</div>
+</div>
+
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+</div>
+
+<footer class="footer">
+Сделано с любовью ❤️<br>
+Для самой лучшей мамы на свете.
+</footer>
+
+<script>
+/* === Preloader === */
+const bar=document.getElementById("preloaderBar");
+let p=0;
+const timer=setInterval(()=>{
+p+=Math.random()*14;
+if(p>100)p=100;
+bar.style.width=p+"%";
+if(p>=100){
+clearInterval(timer);
+setTimeout(()=>document.getElementById("preloader").style.opacity="0",200);
+setTimeout(()=>document.getElementById("preloader").remove(),600);
+}
+},200);
+
+/* === Reveal on scroll === */
+const reveals=document.querySelectorAll(".reveal");
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("reveal--visible");io.unobserve(x.target)}})});
+reveals.forEach(el=>io.observe(el));
+
+/* === Confetti === */
+function confetti(){
+for(let i=0;i<100;i++){
+const d=document.createElement("div");
+d.style.position="fixed";
+d.style.width="7px";d.style.height="7px";
+d.style.background=["#ff5c9d","#ffafcc","#ffe066"][Math.floor(Math.random()*3)];
+d.style.left=Math.random()*100+"vw";
+d.style.top="-10px";
+d.style.opacity=".8";
+d.style.transform=`rotate(${Math.random()*360}deg)`;
+d.style.transition="transform 3s linear, top 3s linear, opacity 3s";
+document.body.appendChild(d);
+setTimeout(()=>{d.style.top="120vh";d.style.transform=`rotate(${Math.random()*360}deg)`;d.style.opacity="0"},50);
+setTimeout(()=>d.remove(),3100);
+}
+}
+document.getElementById("confettiBtn").onclick=confetti;
+document.getElementById("softConfettiBtn").onclick=()=>confetti();
+
+/* Scroll to why */
+document.getElementById("startScrollBtn").onclick=()=>{
+document.getElementById("why").scrollIntoView({behavior:"smooth"});
+};
+</script>
+
+</body>
+</html>
